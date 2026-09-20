@@ -10,7 +10,7 @@ public class Main {
 
     private static final List<User> users = new ArrayList<>();
 
-    public static void main(String[] args) {
+    public static Javalin createApp() {
 
         Javalin app = Javalin.create();
 
@@ -65,6 +65,15 @@ public class Main {
             ctx.result("Invalid username or password");
         });
 
-        app.start(7000);
+        return app;
+    }
+
+    // Test-support hook: clears the in-memory "database" between tests
+    static void resetUsers() {
+        users.clear();
+    }
+
+    public static void main(String[] args) {
+        createApp().start(7000);
     }
 }
