@@ -6,7 +6,7 @@
 
 A simple REST API built with Java and Javalin that provides user registration and login functionality.
 
-This project was created as a learning project to practice **Java, REST APIs, HTTP methods, API testing, and Postman**.
+This project was created as a learning project to practice **Java, REST APIs, HTTP methods, manual API testing, and automated test automation**.
 
 ## Technologies Used
 
@@ -16,15 +16,18 @@ This project was created as a learning project to practice **Java, REST APIs, HT
 * REST API
 * JSON
 * Postman
+* JUnit 5
+* RestAssured
+* AssertJ
 * Git & GitHub
 
 ## API Endpoints
 
 | Method | Endpoint    | Description                  |
-| ------ | ----------- | ---------------------------- |
+| ------ | ----------- | ----------------------------- |
 | GET    | `/`         | Checks if the API is running |
 | POST   | `/register` | Registers a new user         |
-| POST   | `/login`    | Logs a user in               |
+| POST   | `/login`    | Logs a user in                |
 
 ## Running the Application
 
@@ -38,9 +41,31 @@ The API starts on:
 http://localhost:7000
 ```
 
-## API Testing with Postman
+## Automated Tests
 
-The API was manually tested using Postman.
+The project includes an automated test suite (`UserApiTests.java`) built with **JUnit 5** and **RestAssured**, covering both the registration and login endpoints.
+
+Run all tests with:
+
+```text
+mvn test
+```
+
+The tests spin up a real instance of the API on a random free port, send real HTTP requests using the JSON files in the project root as request bodies, and assert on the actual HTTP status codes returned — no mocking of the server itself.
+
+### Test coverage
+
+* Registering a new user succeeds (`201`)
+* Registering a duplicate username fails (`409`)
+* Registering without a username fails (`400`)
+* Registering without a password fails (`400`)
+* Logging in with correct credentials succeeds (`200`)
+* Logging in with the wrong password fails (`401`)
+* Logging in as an unknown user fails (`401`)
+
+## Manual API Testing with Postman
+
+Before automating the tests above, the API was first manually tested and verified using Postman to confirm expected behaviour for each scenario.
 
 ### Health Check
 
@@ -146,18 +171,6 @@ Response:
 Invalid username or password
 ```
 
-## API Test Scenarios
-
-The following scenarios were tested manually in Postman:
-
-* API health check
-* Successful user registration
-* Registration with missing password
-* Duplicate username registration
-* Successful login
-* Login with incorrect password
-* Login with a username that does not exist
-
 ## Project Structure
 
 ```text
@@ -166,19 +179,34 @@ UserRegistrationLoginAPI
 │   ├── main
 │   │   └── java
 │   │       └── com
-│   │           └── them bani
+│   │           └── thembani
 │   │               └── api
-│   │                   └── Main.java
+│   │                   ├── Main.java
+│   │                   └── model
+│   │                       └── User.java
 │   └── test
+│       └── java
+│           └── com
+│               └── thembani
+│                   └── api
+│                       └── UserApiTests.java
+├── register-request.json
+├── register-duplicate.json
+├── register-missing-username.json
+├── register-missing-password.json
+├── login-wrong-password.json
+├── login-unknown-user.json
+├── login-missing-username.json
+├── login-missing-password.json
 ├── pom.xml
 └── README.md
 ```
+
 
 ## Future Improvements
 
 Possible future improvements include:
 
-* Add automated API tests
 * Add more input validation
 * Store users in a database
 * Hash passwords instead of storing them directly
@@ -196,7 +224,8 @@ This project demonstrates practical experience with:
 * JSON request and response bodies
 * API validation
 * Positive and negative testing
-* Postman
+* Manual testing with Postman
+* Automated testing with JUnit 5 and RestAssured
 * Maven
 * Git and GitHub
 
