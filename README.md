@@ -1,3 +1,7 @@
+# verification code
+
+* WTC-AWCK9NGK
+
 # User Registration & Login API
 
 A simple REST API built with Java and Javalin that provides user registration and login functionality.
